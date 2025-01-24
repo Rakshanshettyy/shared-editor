@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { db } from "../../firebaseConfig";  // Import Realtime Database config
-import { ref, get, set, onValue } from "firebase/database";  // Import Realtime Database methods
+import { db } from "../../firebaseConfig";
+import { ref, get, set, onValue } from "firebase/database";
+import { toast,ToastContainer  } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css"; // Import styles
 
 const SharedEditor = () => {
   const quillRef = useRef(null);
@@ -15,7 +17,7 @@ const SharedEditor = () => {
     const fetchAndSync = async () => {
       try {
         const docSnap = await get(docRef);
-        
+
         // Initialize document if it doesn't exist
         if (!docSnap.exists()) {
           await set(docRef, { content: "" });
@@ -25,7 +27,7 @@ const SharedEditor = () => {
         const unsubscribe = onValue(docRef, (snapshot) => {
           const data = snapshot.val();
           if (data) {
-            setEditorContent(data.content);
+            setEditorContent(data.content || "");  // Ensure empty content is handled
           }
         });
 
@@ -36,12 +38,28 @@ const SharedEditor = () => {
     };
 
     fetchAndSync();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Update Realtime Database on content change
   const handleContentChange = (content) => {
     setEditorContent(content);
-    set(docRef, { content });  // Use set to update the content in Realtime Database
+
+  };
+
+  // Insert content into DB once typing is done (on blur or timeout)
+  const handleBlur = () => {
+    const quill = quillRef.current.getEditor();
+    const content = quill.getContents();  // Get the full content
+    set(docRef, { content: content || "" });  // Save content to the database
+  };
+
+  // Save the document manually and show a toaster notification
+  const handleSave = () => {
+    const quill = quillRef.current.getEditor();
+    const content = quill.getContents();  // Get the full content
+    set(docRef, { content: content || "" });  // Save content to the database
+    toast.success("Document updated!");  // Show success toaster
   };
 
   const modules = {
@@ -80,19 +98,32 @@ const SharedEditor = () => {
         <button className="ql-code-block">Code Block</button>
         <button className="ql-blockquote">Blockquote</button>
         <button className="ql-clean">Clear Formatting</button>
+
+      {/* Save Button */}
+<button
+  onClick={handleSave}
+  className="bg-blue-500 text-black rounded-md p-3 mt-2"
+  style={{ position: 'relative', bottom: '9px' }}
+>
+  <i className="fas fa-save text-xl"></i> 
+</button>
+
       </div>
 
       {/* Editor */}
-      <div className="flex-1 h-full border border-gray-300 bg-white shadow-md p-2">
+      <div className="flex-1 h-full border border-gray-300 bg-white shadow-md p-2 overflow-x-auto">
         <ReactQuill
           ref={quillRef}
           theme="snow"
           value={editorContent}
-          onChange={(content) => handleContentChange(content)}
+          onChange={handleContentChange}
+          onBlur={handleBlur}
           modules={modules}
           style={{ height: "100%" }}
         />
       </div>
+      {/* Toaster Notification */}
+      <ToastContainer />
     </div>
   );
 };

@@ -29,7 +29,7 @@ function App() {
    
 
       {/* Quill Editors */}
-      <div className="flex-grow p-4 overflow-hidden">
+      <div className="flex-grow p-4">
         {activeTab === 'shared' ? <SharedEditor /> : <PersonalEditor />}
       </div>
     </div>
