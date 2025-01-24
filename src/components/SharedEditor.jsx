@@ -3,19 +3,15 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { db } from "../../firebaseConfig";
 import { ref, get, set, onValue } from "firebase/database";
-import { toast, ToastContainer } from "react-toastify"; 
-import "react-toastify/dist/ReactToastify.css"; 
+import { toast, ToastContainer } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css"; // Import styles
 
 const SharedEditor = () => {
 	const quillRef = useRef(null);
 	const [editorContent, setEditorContent] = useState("");
-	const [isEditing, setIsEditing] = useState(false); // To track if the user is editing
-	const [editingUser, setEditingUser] = useState(null); // To track the user who is currently editing
 
 	const docRef = ref(db, "documents/sharedEditor");
-	const editorStatusRef = ref(db, "documents/editorStatus"); // New ref to track editing status
 
-	// Fetch and set up real-time sync
 	useEffect(() => {
 		const fetchAndSync = async () => {
 			try {
@@ -30,26 +26,11 @@ const SharedEditor = () => {
 				const unsubscribe = onValue(docRef, (snapshot) => {
 					const data = snapshot.val();
 					if (data) {
-						setEditorContent(data.content || ""); // Ensure empty content is handled
+						setEditorContent(data.content || ""); 
 					}
 				});
 
-				// Set up real-time listener for editor status
-				const statusUnsubscribe = onValue(editorStatusRef, (snapshot) => {
-					const statusData = snapshot.val();
-					if (statusData && statusData.isEditing) {
-						setEditingUser(statusData.user); // Set the user who is currently editing
-						setIsEditing(true); // Lock editing
-					} else {
-						setEditingUser(null);
-						setIsEditing(false); // Unlock editing
-					}
-				});
-
-				return () => {
-					unsubscribe();
-					statusUnsubscribe();
-				};
+				return () => unsubscribe();
 			} catch (error) {
 				console.error("Error setting up document:", error);
 			}
@@ -67,33 +48,16 @@ const SharedEditor = () => {
 	// Insert content into DB once typing is done (on blur or timeout)
 	const handleBlur = () => {
 		const quill = quillRef.current.getEditor();
-		const content = quill.getContents(); 
+		const content = quill.getContents(); // Get the full content
 		set(docRef, { content: content || "" }); // Save content to the database
-
-		// Release the lock when the user is done editing
-		set(editorStatusRef, { isEditing: false, user: null });
 	};
 
 	// Save the document manually and show a toaster notification
 	const handleSave = () => {
 		const quill = quillRef.current.getEditor();
-		const content = quill.getContents(); 
+		const content = quill.getContents(); // Get the full content
 		set(docRef, { content: content || "" }); // Save content to the database
-
-		// Release the lock after saving
-		set(editorStatusRef, { isEditing: false, user: null });
 		toast.success("Document updated!"); // Show success toaster
-	};
-
-	// Handle attempting to start editing
-	const handleStartEditing = () => {
-		if (isEditing) {
-			toast.warning("Another user is currently editing this document.");
-		} else {
-			// Lock the document for this user
-			const userId = "user123"; // You can use a real user ID here (e.g., from authentication)
-			set(editorStatusRef, { isEditing: true, user: userId });
-		}
 	};
 
 	const modules = {
@@ -101,6 +65,7 @@ const SharedEditor = () => {
 			container: "#sharedToolbar",
 		},
 	};
+
 	return (
 		<div className='flex flex-col h-screen'>
 			{/* Toolbar */}
@@ -181,7 +146,6 @@ const SharedEditor = () => {
 					value={editorContent}
 					onChange={handleContentChange}
 					onBlur={handleBlur}
-					onFocus={handleStartEditing} // Lock the document when the user starts editing
 					modules={modules}
 					style={{ height: "100%" }}
 				/>
