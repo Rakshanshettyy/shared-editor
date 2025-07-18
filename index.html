@@ -1,21 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<link rel="icon" type="image/png" href="/editor.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta
-			name="description"
-			content="This shared editor allows multiple users to collaborate and edit documents in real-time."
-		/>
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/editor.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-		/>
+    <!-- Primary Meta Tags -->
+    <title>R Shared Editor - Real-time Collaborative Document Editor by Rakshan Shetty</title>
+    <meta name="title" content="R Shared Editor - Real-time Collaborative Document Editor by Rakshan Shetty" />
+    <meta name="description" content="R Shared Editor by Rakshan Shetty - Free online collaborative document editor for real-time team collaboration. Edit documents together instantly with multiple users. Perfect for remote work, education, and project management." />
+    <meta name="keywords" content="R Shared Editor, Rakshan Shetty, shared editor, collaborative editing, real-time editor, online document editor, team collaboration, multi-user editor, free editor, web-based editor, document sharing" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="author" content="Rakshan Shetty" />
 
-		<title>Shared Editor</title>
-	</head>
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rsharededitor.netlify.app/" />
+    <meta property="og:title" content="R Shared Editor - Real-time Collaborative Document Editor" />
+    <meta property="og:description" content="Free online collaborative document editor by Rakshan Shetty. Edit documents in real-time with multiple users. Perfect for teams, students, and remote collaboration." />
+    <meta property="og:image" content="https://rsharededitor.netlify.app/og-image.png" />
+    <meta property="og:site_name" content="R Shared Editor" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://rsharededitor.netlify.app/" />
+    <meta property="twitter:title" content="R Shared Editor - Real-time Collaborative Document Editor" />
+    <meta property="twitter:description" content="Free online collaborative document editor by Rakshan Shetty. Edit documents in real-time with multiple users." />
+    <meta property="twitter:image" content="https://rsharededitor.netlify.app/twitter-image.png" />
+    <meta property="twitter:creator" content="@RakshanShetty" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://rsharededitor.netlify.app/" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "R Shared Editor",
+      "description": "Real-time collaborative document editor for teams and individuals",
+      "url": "https://rsharededitor.netlify.app/",
+      "author": {
+        "@type": "Person",
+        "name": "Rakshan Shetty"
+      },
+      "creator": {
+        "@type": "Person",
+        "name": "Rakshan Shetty"
+      },
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "HTML5, JavaScript enabled",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Real-time collaboration",
+        "Multi-user editing",
+        "Document sharing",
+        "Cross-platform compatibility",
+        "No registration required",
+        "Free to use"
+      ],
+      "dateCreated": "2025",
+      "inLanguage": "en-US"
+    }
+    </script>
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <!-- Stylesheets -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+
+    <!-- Additional favicons for better browser support -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Additional meta tags for better indexing -->
+    <meta name="category" content="Technology" />
+    <meta name="coverage" content="Worldwide" />
+    <meta name="distribution" content="Global" />
+    <meta name="rating" content="General" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="target" content="all" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+</head>
+
 	<body>
 		<div id="root"></div>
 		<script type="module" src="/src/main.jsx"></script>
